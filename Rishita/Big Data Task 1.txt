@@ -1,0 +1,28 @@
+Ques 1: Difference between Hadoop 1 and Hadoop 2?
+Ans:     In Hadoop 1 , there is a single NameNode which is thus the single point of failure whereas, in Hadoop 2.x, there are Active and Passive NameNodes. In case, the active NameNode fails, the passive                                NameNode replaces the active NameNode and takes the charge. As a result, high availability is there in Hadoop 2.x.
+
+             In Hadoop 2 , the YARN provides a central resource manager that share a common resource to run multiple applications in Hadoop whereas data processing is a problem in Hadoop 1.x.
+             Hadoop 1 is supported only by Linux 
+             Hadoop 2 is supported by both Linux and Windows.
+
+
+Ques 2: In hadoop 2 why the block size has been set to 128 mb?
+Ans:    
+	The reason of having this huge block size is to minimize the cost of seek and reduce the meta data information generated per block.
+	To reduce the disk seeks (IO). Larger the block size, lesser the file blocks. Thus, less number of disk seeks. And block can transfer within respectable limits and that to parallelly.
+	HDFS have huge datasets, i.e. terabytes and petabytes of data. If we take 4 KB block size for HDFS, just like Linux file system, which has 4 KB block size. Then we would be having too many blocks and 	therefore too much of metadata. Managing this huge number of blocks and metadata will create huge overhead. Which is something which we don’t want? So, the block size is set to 128 MB.
+	On the other hand, block size can’t be so large. Because the system will wait for a very long time for the last unit of data processing to finish its work.
+
+
+	128Mb is a multiple of "2" which means we can represent the number in binary like:
+
+	128Mb= 131072 Kb= 134217728 b = 1000000000000000000000000000 Binary
+
+	With this number we don't wast any bit when we stock data on memory.
+
+Ques 3: Why name node is relay on memory rather than datanode?
+Ans:  Name Node only store metadata which is related to the different blocks and because of this reason it needs high memory space. Data Nodes don’t need large memory space.
+
+Ques 4: Suppose you have 10 PB of data. Metadata is actually store object of file and folder ----> each obj 200 B. How much min Namenode RAM memory you need for your data node in a cluster to manage the metadata?
+Estimate minimum Namenode RAM size for HDFS with 10 PB capacity, block size 64 MB, average metadata size for each block is 200 B, replication factor is 3. 
+Ans:  10 PB/ (64MB *3) *200B = (10 * 10^15)/(64* 10^6 * 3)*200 B = 10^10/(64*3)* 300B = 1.5625e10 B
