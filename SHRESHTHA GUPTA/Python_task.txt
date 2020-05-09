@@ -1,0 +1,20 @@
+PYTHON EXCITING TASK:
+Q.you have to get input from the users  and it is recommended to be in  voice command  and you need to do a 
+sentimental analysis of the given input[ hint: use textblob library ].
+
+Ans.
+import speech_recognition as sr
+recognizer=sr.Recognizer()
+with sr.Microphone() as source:
+    print('Talk to convert speech to text')
+    speech=recognizer.listen(source)
+    print('End of speech')
+
+try:
+    print("Text to speech:"+recognizer.recognize_google(speech))
+except:
+    pass;
+from textblob import TextBlob
+blob=TextBlob("  "+recognizer.recognize_google(speech))
+blob.sentiment
+
