@@ -1,0 +1,102 @@
+Ques 1:  WAP to scrape any web-site. Print the top 5 repeated words and count them and plot the graph of it.
+Ans: import requests
+from bs4 import BeautifulSoup
+from collections import Counter
+import matplotlib.pyplot as plt
+page = requests.get('https://www.cricbuzz.com/')
+page = page.text
+soup = BeautifulSoup(page, 'html.parser')
+words = ''
+words += soup.title.text + ' '
+h4 = soup.find_all('h4')
+h3 = soup.find_all('h3')
+h2 = soup.find_all('h2')
+for i, j, k in zip(h4, h3, h2):
+ print(i.text, j.text, k.text)
+ words += i.text + ' ' + j.text + ' ' + k.text + ' '
+list1 =
+['to','-',':','and','&','1','2','3','All','tags','In','With','This','The',
+'his','her','or','What','do','was','I','It','as','a','the','that','but','w
+ho','by','when','An','an','can','with','is','was','for','on','of','upto','
+from','in','And','A','','lot','`','!','@','#','$','%','^','*','(',')','my'
+,'|']
+word_list = words.split(' ')
+for i in word_list:
+ if i in list1:
+ word_list.remove(i)
+coun = Counter(word_list)
+for word, count in coun.most_common(5):
+ print(f'{word} : {count}')
+ plt.bar(word, count)
+ plt.xlabel('Words')
+ plt.ylabel('Occurence')
+ plt.title('Words Occurence Bar Graph')
+ plt.tight_layout()
+
+Ques 2:  WAP to do a sentiment analysis of any word entered by the user in voice command.
+Ans: import speech_recognition as s_r
+import tweepy
+from textblob import TextBlob
+import time
+import matplotlib.pyplot as plt
+recognise_voice = s_r.Recognizer()
+mic = s_r.Microphone(device_index=1)
+with mic as source:
+ print("Speak now 🔊 to perform the Sentiment Analysis on Twitter!!!!")
+ print('Tell us the Keywords/Tags/Person 🔊')
+ audio = recognise_voice.listen(source)
+ time.sleep(2)
+ print('Tell us the number of tweets for Sentiment Analysing 🔊')
+ audio2 = recognise_voice.listen(source)
+word = recognise_voice.recognize_google(audio)
+total = recognise_voice.recognize_google(audio2)
+print(f'{total} tweets will be use for Sentiment Analysis of {word}')
+def percentage(part, whole):
+ return round(100 * float(part)/float(whole), 2)
+consumer_key = 'COfg63NIGgNFeVZDIEA8imE5C'
+consumer_secret = 'Dx96nwyY6Wy8l3adPfvFRjS81Ie672eNAjUXsBaQCowz4NLV4h'
+access_token = '717706611821654017-0aAzSitKPXu6fNrC6Y8S7qYjP2eTMDi'
+access_token_secret = 'x9cT3aYsz4OGgFOJzmN0oI9Q7EE4T5bQ7oSOD0FvNMHT8'
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+public_tweets = tweepy.Cursor(api.search, q = word).items(int(total))
+polarity = 0
+positive = 0
+negative = 0
+neutral = 0
+for tweet in public_tweets:
+ #print(tweet.text)
+ analysis = TextBlob(tweet.text)
+ #print(analysis.sentiment)
+ polarity += analysis.sentiment.polarity
+ if analysis.sentiment.polarity == 0:
+ neutral += 1
+ elif analysis.sentiment.polarity < 0.00:
+ negative += 1
+ elif analysis.sentiment.polarity > 0.00:
+ positive += 1
+positive = percentage(positive, int(total))
+negative = percentage(negative, int(total))
+neutral = percentage(neutral, int(total))
+polarity = percentage(polarity, int(total))
+check_max = [positive, negative, neutral]
+maxi_index = check_max.index(max(check_max))
+print(f'After analyzing {total} tweets, Reaction of peoples about {word}
+is: ')
+if maxi_index == 0:
+ print('Positive')
+elif maxi_index == 1:
+ print('Negative')
+else:
+ print('Neutral')
+labels = ['Positive ['+str(positive)+'%]', 'Neutral ['+str(neutral)+'%]',
+'Negative ['+str(negative)+'%]']
+sizes = [positive, negative, neutral]
+colors = ['yellow', 'green', 'red']
+patches, texts = plt.pie(sizes, colors=colors, startangle = 90)
+plt.legend(patches, labels, loc='best')
+plt.title('Sentiment Analysis')
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
