@@ -1,0 +1,54 @@
+Ques 1- Difference between Hadoop1 and Hadoop2 ?
+ Apache Hadoop V.1.x has the following two major Components
+ HDFS (HDFS V1)
+ MapReduce (MR V1)
+
+ Apache Hadoop V.2.x has the following three major Components
+ HDFS V.2
+ YARN (MR V2)
+ MapReduce (MR V1)
+
+Hadoop 1.x supports only one namespace for managing HDFS filesystem whereas Hadoop 2.x supports multiple namespaces.
+	It supports one and only one programming model: MapReduce. Hadoop 2.x supports multiple programming models with YARN Component like MapReduce, Interative, Streaming, Graph, Spark, Storm etc.
+	It has lot of limitations in Scalability. Hadoop 2.x has overcome that limitation with new architecture.
+	It has Multi-tenancy Support, but Hadoop 1.x doesn’t.
+	It HDFS uses fixed-size Slots mechanism for storage purpose whereas Hadoop 2.x uses variable-sized Containers.
+	It supports maximum 4,000 nodes per cluster where Hadoop 2.x supports more than 10,000 nodes per cluster.
+
+How Hadoop 2.x solves Hadoop 1.x Limitations
+Hadoop 2.x has resolved most of the Hadoop 1.x limitations by using new architecture.
+
+By decoupling MapReduce component responsibilities into different components.
+By Introducing new YARN component for Resource management.
+By decoupling component’s responsibilities, it supports multiple namespace, Multi-tenancy, Higher Availability and Higher Scalability.
+
+Hadoop 2.x YARN Benefits
+
+Highly Scalability
+Highly Availability
+Supports Multiple Programming Models
+Supports Multi-Tenancy
+Supports Multiple Namespaces
+Improved Cluster Utilization
+Supports Horizontal Scalability
+
+Ques 2- In Hadoop2 why the block size is 128 MB ?
+ In Hadoop, input data files are divided into blocks of a prticular size(128 mb by default) and then these blocks of data are stored on different data nodes.
+ Hadoop is designed to process large volumes of data. Each block’s information(its address ie on which data node it is stored) is placed in namenode. So if the 
+ block size is too small, then there will be a large no. of blocks to be stored on data nodes as well as a large amount of metadata information needs to be stored 
+ on namenode, Also each block of data is processed by a Mapper task. If there are large no. of small blocks, a lot of mapper tasks will be required. So having small
+ block size is not very efficient.
+ Also the block size should not be very large such that , parallelism cant be achieved. It should not be such that the system is waiting a very long time for one unit 
+ of data processing to finish its work.
+ A balance needs to be maintained. That’s why the default block size is 128 MB. It can be changed as well depending on the size of input files.
+
+Ques 3- Why the namenode is relay on memory rather than datanode ?
+ Name Node only store metadata which is related to the different blocks and because of this reason it needs high memory space. Data Nodes don’t need large memory space.
+
+Ques 4- Suppose you have 10 PB of data. Metadata is actually store object of file and folder(each obj 200 B). 
+How much min Namenode RAM memory you need for your data node in a cluster to manage the metadata?
+Estimate minimum Namenode RAM size for HDFS with 10 PB capacity, block size 64 MB, average metadata size for each block is 200 B, replication factor is 3. 
+ 10 PB/(64MB *3) * 200B = (10 * 10^15)/(64 * 10^6 * 3) * 200 B = 10^10/(64 * 3) * 300B = 1.5625e10 B
+
+Ques 5- At the time of failure, Which will recover first DataNode or NameNode ?
+ Datanode
