@@ -1,0 +1,44 @@
+Ques 1: Find out the difference between put cmd and copyFromLocal?
+Ans 1: -Put and -copyFromLocal is almost same command but a  bit difference between both of them.
+
+            -copyFromLocal  this command can copy only one source ie  from local file system to destination file system.
+
+            -put command can copy single and multiple sources from local file system to destination file system.
+
+            copyFromLocal is similar to put command, but the source is restricted to a local file reference.
+
+Ques 2: You have to list all files and subfolders and view them in human readable form. Make sure to give the location of parent /regex .
+Ans 2:  hdfs dfs –ls –h /regex
+
+
+Ques 3: Write a command to see the disk usage of all the replicas used.
+Ans 3: You can check the free space in an HDFS directory with a couple of commands. The -df command shows the configured capacity, available free space and used space of a file system in HDFS.
+	$ hdfs dfs -df
+	
+	You can specify the –h option with the df command for more readable and concise output:
+	$ hdfs dfs -df -h
+
+	You can view the used storage in the entire HDFS file system with the following command:
+	$ hdfs dfs -du /
+
+
+Ques 4: Remove some file using rm -r  (You will see moving them to trash) . Again remove the files so that it will delete without moving into trash.
+Ans 4:    $hdfs dfs –rm –r /regex/file.txt
+
+                $hdfs dfs –rm –skipTrash /regex/file.txt
+
+
+Ques 5: Retrive the files from hadoop file system location to your localfile system.
+Ans 5:    $hdfs dfs –copyToLocal /regex/hello.txt
+
+
+Ques 6: By default replication factor in hdfs is 3. If you want to change the replication factor to 5 at the time of putting the files. How will you do it?
+Ans 6:   $hdfs dfs –setrep –w 5 /regex/yo.txt  
+
+Ques 7: Suppose you  have a file and your metadata is stored in namenode. You have to find the location , blocks , filename of the file.
+Ans 7:   $hdfs dfsadmin -report
+	      or
+              $bin dfsadmin -report
+
+Ques 8: Change the ower the the file from hdfs to cloudera or any other user.
+And 8: hdfs dfs –chown cloudera /regex/yo.txt
